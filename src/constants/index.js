@@ -12,14 +12,8 @@ export const F_NAME = 'firstName';
 export const L_NAME = 'lastName';
 export const PHONE  = 'phone';
 
-// Local storage keys
-export const STORE_KEY_FILTER    = 'contact-list-filter-value';
-export const STORE_KEY_SORT_PROP = 'contact-list-sort-property';
-export const STORE_KEY_CONTACTS  = 'contact-list-contacts';
-
 // Actions
 export const ADD_CONTACT         = 'Add a contact';
 export const UPDATE_SORT_PROP    = 'Update sort property';
-export const UPDATE_FILTER_VALUE = 'Update filter value';
 export const TOGGLE_FORM_STATE   = 'Toggle form state';
 export const UPDATE_CUSTOM_SORT  = 'Update custom sort order';

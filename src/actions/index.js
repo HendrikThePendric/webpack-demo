@@ -1,7 +1,6 @@
 import {
     ADD_CONTACT,
     UPDATE_SORT_PROP,
-    UPDATE_FILTER_VALUE,
     TOGGLE_FORM_STATE,
     UPDATE_CUSTOM_SORT
 } from '../constants';
@@ -18,9 +17,6 @@ export const addContact = (contact) =>
 
 export const updateSortProp = (sortProp) =>
     createAction(UPDATE_SORT_PROP, sortProp);
-
-export const updateFilterValue = (val) =>
-    createAction(UPDATE_FILTER_VALUE, val);
 
 export const toggleFormState = () =>
     createAction(TOGGLE_FORM_STATE, null);

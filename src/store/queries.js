@@ -5,21 +5,14 @@ import {
     L_NAME_DESC,
     PHONE_ASC,
     PHONE_DESC,
-    CUSTOM,
-    F_NAME,
-    L_NAME,
-    PHONE
+    CUSTOM
 } from '../constants';
 
 // PUBLIC METHODS
 export const getVisibleContacts = (state) => {
-    let visibleContacts;
-    const { contacts, filterVal, sortProp } = state;
-    // Filtered contact list, new array in both cases
-    visibleContacts = filterContacts(contacts, filterVal);
+    const { contacts, sortProp } = state;
     // Sorted list, a sorted version of that new array
-    visibleContacts = sortContactsBy(visibleContacts, sortProp);
-    return visibleContacts;
+    return sortContactsBy(contacts, sortProp);
 };
 
 export const getContactsCount = (state) => {
@@ -29,25 +22,6 @@ export const getContactsCount = (state) => {
 export const getNextSequenceId = (state) => {
     return state.contacts.length + 1;
 };
-
-
-// PRIVATE METHODS
-function filterContacts(contacts, filterVal) {
-    if (!filterVal) {
-        return [...contacts];
-    }
-    return contacts.filter(contact => anyPropMatchesFilter(contact, filterVal.toLowerCase()));
-}
-
-function anyPropMatchesFilter(contact, filterVal) {
-    const contactProps = [F_NAME, L_NAME, PHONE];
-    for (var i = 0; i < contactProps.length; i++) {
-        if (contact[contactProps[i]].toLowerCase().indexOf(filterVal) !== -1) {
-            return true;
-        }
-    }
-    return false;
-}
 
 function sortContactsBy(contacts, sortProp) {
     return contacts.sort((a, b) => {

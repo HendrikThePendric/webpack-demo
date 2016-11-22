@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { getContactsCount } from '../../store';
 import AddContact from '../add-contact/add-contact';
 import SortContacts from '../sort-contacts/sort-contacts';
-import FilterContacts from '../filter-contacts/filter-contacts';
 import ContactList from '../contact-list/contact-list';
 
 class App extends Component {
@@ -21,7 +20,6 @@ class App extends Component {
                         Contact list 
                         <small>({contactsCount} contacts)</small>
                     </h2>
-                    <FilterContacts />
                     <SortContacts />
                     <ContactList  />
                 </div>

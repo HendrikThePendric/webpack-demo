@@ -5,7 +5,6 @@ export default function () {
     return {
         contacts: mockContacts,
         sortProp: L_NAME_ASC,
-        filterVal: '',
         showForm: false
     }
 }

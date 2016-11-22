@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import AddContactForm from './add-contact-form';
-import { addContact, toggleFormState } from '../../actions';
+import { addContact, toggleFormState, clearCurrentContact } from '../../actions';
 import { getNextSequenceId } from '../../store';
 import './add-contact.scss';
 
@@ -23,6 +23,16 @@ class AddContact extends Component {
         toggleFormState();
     }
 
+    onTogglerClick() {
+        const { showForm, currContact , toggleFormState , clearCurrentContact } = this.props;
+        if (!showForm) {
+            toggleFormState();
+        }
+        if (currContact) {
+            clearCurrentContact();
+        }
+    }
+
     renderForm() {
         const { showForm } = this.props;
         if (!showForm) {
@@ -32,12 +42,12 @@ class AddContact extends Component {
     }
 
     render() {
-        const { toggleFormState, showForm } = this.props
+        const { showForm } = this.props
         return (
             <div className="add-contact">
                 <FloatingActionButton
                     style={{ marginBottom: '20px' }}
-                    onClick={toggleFormState}
+                    onClick={this.onTogglerClick.bind(this)}
                     disabled={showForm}
                     >
                     <ContentAdd />
@@ -51,7 +61,9 @@ class AddContact extends Component {
 function mapStateToProps (state) {
     return {
         showForm: state.showForm,
-        nextSequenceId: getNextSequenceId(state)
+        nextSequenceId: getNextSequenceId(state),
+        currContact: state.currContact
+
     };
 }
-export default connect(mapStateToProps, {addContact, toggleFormState})(AddContact);
+export default connect(mapStateToProps, {addContact, toggleFormState, clearCurrentContact})(AddContact);

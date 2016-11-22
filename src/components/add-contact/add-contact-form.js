@@ -1,8 +1,23 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import RaisedButton from 'material-ui/RaisedButton';
 import { TextField } from 'redux-form-material-ui';
 import { F_NAME, L_NAME, PHONE } from '../../constants';
+
+const getInitialFormValues = (currContact) => {
+    let values = {};
+    if (currContact) {
+        values[F_NAME] = currContact[F_NAME];
+        values[L_NAME] = currContact[L_NAME];
+        values[PHONE]  = currContact[PHONE];
+    } else {
+        values[F_NAME] = '';
+        values[L_NAME] = '';
+        values[PHONE]  = '';
+    }
+    return values;
+}
 
 const validate = values => {
     const errors         = {};
@@ -35,7 +50,8 @@ const validate = values => {
 class AddContactForm extends Component {
     
     render() {
-        const { handleSubmit, pristine, valid, submitting } = this.props
+        console.log('test', this);
+        const { handleSubmit, pristine, valid, submitting } = this.props;
         return (
             <form
                 className="add-contact-form"
@@ -75,7 +91,20 @@ class AddContactForm extends Component {
     }
 }
 
-export default reduxForm({
+// Connect it to redux form
+const reduxConnectedForm = reduxForm({
   form: 'addContactForm',
   validate
 })(AddContactForm);
+
+
+function mapStateToProps (state) {
+    return {
+        initialValues: getInitialFormValues(state.currContact)
+    };
+}
+
+const connectedForm = connect(
+    mapStateToProps, 
+)(reduxConnectedForm);
+export default connectedForm;

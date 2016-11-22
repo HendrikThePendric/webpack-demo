@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Reorder from 'react-reorder';
 import { getVisibleContacts } from '../../store';
 import {ListItem} from 'material-ui/List';
-import { updateCustomSortOrder } from '../../actions';
+import { updateCustomSortOrder, setCurrentContact } from '../../actions';
 import {CUSTOM} from '../../constants';
 import './contact-list.scss';
 
@@ -19,6 +19,12 @@ const ContactListItem = ({item: {firstName, lastName, phone}, sharedProps: {disa
 
 class ContactList extends Component {
 
+    onContactClick(event, contact, index) {
+        const { setCurrentContact } = this.props;
+        const currContact = Object.assign({}, contact, {listIndex: index});
+        setCurrentContact(currContact);
+    }
+
     render() {
         const { contacts, sortProp , updateCustomSortOrder } = this.props;
         const disableReorder = sortProp !== CUSTOM;
@@ -29,7 +35,7 @@ class ContactList extends Component {
                 // Lock horizontal to have a vertical list
                 lock='horizontal'
                 // The milliseconds to hold an item for before dragging begins
-                holdTime='0'
+                holdTime='310'
                 // The list to display
                 list={contacts}
                 // A template to display for each list item
@@ -40,6 +46,8 @@ class ContactList extends Component {
                 listClass='contact-list'
                 // Class to be applied to each list item's wrapper element
                 itemClass='list-item'
+                // A function to be called if a list item is clicked (before hold time is up)
+                itemClicked={this.onContactClick.bind(this)}
                 // The key to compare from the selected item object with each item object
                 selectedKey='sequenceId'
                 // Allows reordering to be disabled
@@ -53,7 +61,13 @@ class ContactList extends Component {
 function mapStateToProps (state) {
     return {
         contacts: getVisibleContacts(state),
-        sortProp: state.sortProp
+        sortProp: state.sortProp,
     };
 }
-export default connect(mapStateToProps, { updateCustomSortOrder })(ContactList);
+export default connect(
+    mapStateToProps, 
+    { 
+        updateCustomSortOrder, 
+        setCurrentContact 
+    }
+)(ContactList);

@@ -3,7 +3,9 @@ import {
     UPDATE_SORT_PROP,
     UPDATE_FILTER_VALUE,
     TOGGLE_FORM_STATE,
-    UPDATE_CUSTOM_SORT
+    UPDATE_CUSTOM_SORT,
+    SET_CURRENT_CONTACT,
+    CLEAR_CURRENT_CONTACT
 } from '../constants';
 
 const createAction = (type, payload) => {
@@ -27,3 +29,9 @@ export const toggleFormState = () =>
     
 export const updateCustomSortOrder = (contactList) =>
     createAction(UPDATE_CUSTOM_SORT, contactList);
+
+export const setCurrentContact = (contactIndex) =>
+    createAction(SET_CURRENT_CONTACT, contactIndex);
+    
+export const clearCurrentContact = () =>
+    createAction(CLEAR_CURRENT_CONTACT, null);

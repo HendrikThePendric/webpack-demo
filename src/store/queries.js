@@ -13,13 +13,11 @@ import {
 
 // PUBLIC METHODS
 export const getVisibleContacts = (state) => {
-    let visibleContacts;
     const { contacts, filterVal, sortProp } = state;
     // Filtered contact list, new array in both cases
-    visibleContacts = filterContacts(contacts, filterVal);
+    const filteredContacts = filterContacts(contacts, filterVal);
     // Sorted list, a sorted version of that new array
-    visibleContacts = sortContactsBy(visibleContacts, sortProp);
-    return visibleContacts;
+    return sortContactsBy(filteredContacts, sortProp);
 };
 
 export const getContactsCount = (state) => {

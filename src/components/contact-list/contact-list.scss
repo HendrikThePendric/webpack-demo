@@ -1,0 +1,19 @@
+@import "../../global-styles/mixins";
+
+$module: 'contact-list';
+
+.#{$module} {
+    .list-item {
+
+        &.dragged {
+            @include box-shadow;
+        }
+        &.placeholder {
+            background-color: #FFF8E1;
+            
+            div, span {
+                color: rgba(0,0,0,0.05) !important;
+            }
+        }
+    }
+}

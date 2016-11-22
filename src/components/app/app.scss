@@ -1,0 +1,26 @@
+$module: 'app';
+
+.#{$module} {
+    .add-wrap {
+        width: 290px;
+        position: fixed;
+        left: 20px;
+        top: 20px;
+    }
+    .list-wrap {
+        width: calc(100% - 290px);
+        min-width: 250px;
+        max-width: 400px;
+        margin: 0 20px 0 350px;
+        background-color: #ffffff;
+        box-shadow: rgba(0, 0, 0, 0.117647) 0px 1px 6px, rgba(0, 0, 0, 0.117647) 0px 1px 4px;
+        border-radius: 2px;
+        padding: 1em;
+
+        small {
+            color: rgba(0, 0, 0, 0.541176);
+            font-size: 0.5em;
+            margin-left: 40px
+        }
+    }
+}

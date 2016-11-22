@@ -1,0 +1,14 @@
+@import "../../global-styles/mixins";
+$module: 'add-contact';
+
+.#{$module} {
+    
+    form {
+        background-color: #ffffff;
+        padding: 1em;
+        border-radius: 2px;
+        @include box-shadow;
+        height: 272px;
+        max-width: 290px;
+    }
+}

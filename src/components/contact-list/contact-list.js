@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Reorder from 'react-reorder';
 import { getVisibleContacts } from '../../store';
 import {ListItem} from 'material-ui/List';
-import { updateCustomSortOrder, setCurrentContact } from '../../actions';
+import { updateCustomSortOrder, setCurrentContact, showAddContactForm } from '../../actions';
 import {CUSTOM} from '../../constants';
 import './contact-list.scss';
 
@@ -20,8 +20,11 @@ const ContactListItem = ({item: {firstName, lastName, phone}, sharedProps: {disa
 class ContactList extends Component {
 
     onContactClick(event, contact, index) {
-        const { setCurrentContact } = this.props;
-        const currContact = Object.assign({}, contact, {listIndex: index});
+        const { setCurrentContact, showForm, showAddContactForm } = this.props;
+        const currContact = {...contact, listIndex: index};
+        if (!showForm) {
+            showAddContactForm();
+        }
         setCurrentContact(currContact);
     }
 
@@ -62,12 +65,14 @@ function mapStateToProps (state) {
     return {
         contacts: getVisibleContacts(state),
         sortProp: state.sortProp,
+        showForm: state.showForm
     };
 }
 export default connect(
     mapStateToProps, 
     { 
         updateCustomSortOrder, 
-        setCurrentContact 
+        setCurrentContact,
+        showAddContactForm
     }
 )(ContactList);

@@ -2,24 +2,17 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import RaisedButton from 'material-ui/RaisedButton';
+import ActionDelete from 'material-ui/svg-icons/action/delete';
+import NavigationExpandLess from 'material-ui/svg-icons/navigation/expand-less';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import { hideAddContactForm, clearCurrentContact } from '../../actions';
+
 import { TextField } from 'redux-form-material-ui';
 import { F_NAME, L_NAME, PHONE } from '../../constants';
 
-const getInitialFormValues = (currContact) => {
-    let values = {};
-    if (currContact) {
-        values[F_NAME] = currContact[F_NAME];
-        values[L_NAME] = currContact[L_NAME];
-        values[PHONE]  = currContact[PHONE];
-    } else {
-        values[F_NAME] = '';
-        values[L_NAME] = '';
-        values[PHONE]  = '';
-    }
-    return values;
-}
-
-const validate = values => {
+const validate = (values) => {
+    // exit early
+    if (!values) {return {};}
     const errors         = {};
     const phonePattern   = /^[- +()]*[0-9][- +()0-9]*$/;
     const requiredFields = [
@@ -48,10 +41,32 @@ const validate = values => {
 }
 
 class AddContactForm extends Component {
+
+    onHideClick() {
+        const { currContactIsSet, clearCurrentContact, hideAddContactForm } = this.props;
+        if (currContactIsSet) {
+            clearCurrentContact();
+        }
+        hideAddContactForm();
+    }
+
+    renderDeleteBtn(show) {
+        if (!show) {
+            return null;
+        }
+        return (
+            <FloatingActionButton
+                mini={true}
+                backgroundColor={'#F44336'}
+                style={{float: 'right', marginRight: '20px'}}
+                >
+                <ActionDelete color={'#fff'} />
+            </FloatingActionButton>
+        );
+    }
     
     render() {
-        console.log('test', this);
-        const { handleSubmit, pristine, valid, submitting } = this.props;
+        const { handleSubmit, pristine, valid, submitting, currContactIsSet } = this.props;
         return (
             <form
                 className="add-contact-form"
@@ -80,31 +95,53 @@ class AddContactForm extends Component {
                     style={{ display: 'block', marginBottom: '20px' }}
                     />
                 <RaisedButton
-                    label="Add contact"
-                    secondary={true}
+                    label={currContactIsSet ? 'Update' :  'Add contact'}
+                    primary={!currContactIsSet}
+                    secondary={currContactIsSet}
                     type="submit"
                     disabled={pristine || !valid || submitting}
                     onClick={handleSubmit}
                     />
+                <FloatingActionButton
+                    mini={true}
+                    backgroundColor={'#78909C'}
+                    style={{float: 'right'}}
+                    onClick={this.onHideClick.bind(this)}
+                    >
+                    <NavigationExpandLess color={'#fff'} />
+                </FloatingActionButton>
+                {this.renderDeleteBtn(currContactIsSet)}
             </form>
         );
     }
 }
 
-// Connect it to redux form
-const reduxConnectedForm = reduxForm({
-  form: 'addContactForm',
-  validate
-})(AddContactForm);
+    const getInitialValues = (currContact) => {
+        if (currContact) {
+            const { firstName, lastName, phone } = currContact;
+            return { firstName, lastName, phone };
+        }
+        return { firstName: '', lastName: '', phone: ''};
+    }
 
+    const reduxConnectedForm = reduxForm({
+        form: 'addContactForm',
+        validate,
+        enableReinitialize: true
+    })(AddContactForm);
 
-function mapStateToProps (state) {
-    return {
-        initialValues: getInitialFormValues(state.currContact)
+    const mapStateToProps = (state) => {
+        return {
+            initialValues: getInitialValues(state.currContact),
+            currContactIsSet: state.currContact ? true : false
+        };
     };
-}
 
-const connectedForm = connect(
-    mapStateToProps, 
-)(reduxConnectedForm);
-export default connectedForm;
+    const connectedForm = connect(
+        mapStateToProps,
+        {
+            hideAddContactForm,
+            clearCurrentContact
+        }
+    )(reduxConnectedForm);
+    export default connectedForm;

@@ -2,15 +2,27 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
+import NavigationExpandLess from 'material-ui/svg-icons/navigation/expand-less';
 import AddContactForm from './add-contact-form';
-import { addContact, toggleFormState, clearCurrentContact } from '../../actions';
+import { addContact, showAddContactForm, hideAddContactForm, clearCurrentContact } from '../../actions';
 import { getNextSequenceId } from '../../store';
 import './add-contact.scss';
 
 class AddContact extends Component {
 
-    onContactAdd(values) {
-        const {addContact, toggleFormState, nextSequenceId } = this.props;
+    onFormSubmit(values) {
+        const {hideAddContactForm, currContact, clearCurrentContact } = this.props;
+        if (currContact) {
+            this.updateContact(values);
+            hideAddContactForm();
+        } else {
+            this.addContact(values);
+            clearCurrentContact();
+        }
+    }
+
+    addContact(values) {
+        const {addContact, nextSequenceId } = this.props;
         const { firstName, lastName, phone } = values;
         const id = Date.now();
         addContact({
@@ -20,13 +32,16 @@ class AddContact extends Component {
             id, 
             sequenceId: nextSequenceId
         });
-        toggleFormState();
+    }
+
+    updateContact(values) {
+        const {} = this.props;
     }
 
     onTogglerClick() {
-        const { showForm, currContact , toggleFormState , clearCurrentContact } = this.props;
+        const { showForm, currContact , showAddContactForm , clearCurrentContact } = this.props;
         if (!showForm) {
-            toggleFormState();
+            showAddContactForm();
         }
         if (currContact) {
             clearCurrentContact();
@@ -38,21 +53,30 @@ class AddContact extends Component {
         if (!showForm) {
             return null;
         }
-        return <AddContactForm onSubmit={this.onContactAdd.bind(this)} />
+        return <AddContactForm onSubmit={this.onFormSubmit.bind(this)} />
+    }
+
+    renderIcon(showForm) {
+        if (showForm) {
+            return <NavigationExpandLess />;
+        } else {
+            return <ContentAdd />;
+        }
     }
 
     render() {
-        const { showForm } = this.props
+        const { showForm, currContact } = this.props;
         return (
             <div className="add-contact">
                 <FloatingActionButton
                     style={{ marginBottom: '20px' }}
                     onClick={this.onTogglerClick.bind(this)}
-                    disabled={showForm}
+                    secondary={showForm}
+                    disabled={showForm && !currContact }
                     >
-                    <ContentAdd />
+                    {this.renderIcon()}
                 </FloatingActionButton>
-                {this.renderForm()}
+                {this.renderForm(showForm)}
             </div>
         );
     }
@@ -66,4 +90,12 @@ function mapStateToProps (state) {
 
     };
 }
-export default connect(mapStateToProps, {addContact, toggleFormState, clearCurrentContact})(AddContact);
+export default connect(
+    mapStateToProps,
+    {
+        addContact,
+        showAddContactForm,
+        hideAddContactForm,
+        clearCurrentContact
+    }
+)(AddContact);

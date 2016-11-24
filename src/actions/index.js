@@ -2,7 +2,8 @@ import {
     ADD_CONTACT,
     UPDATE_SORT_PROP,
     UPDATE_FILTER_VALUE,
-    TOGGLE_FORM_STATE,
+    SHOW_CONTACT_FORM,
+    HIDE_CONTACT_FORM,
     UPDATE_CUSTOM_SORT,
     SET_CURRENT_CONTACT,
     CLEAR_CURRENT_CONTACT
@@ -24,8 +25,11 @@ export const updateSortProp = (sortProp) =>
 export const updateFilterValue = (val) =>
     createAction(UPDATE_FILTER_VALUE, val);
 
-export const toggleFormState = () =>
-    createAction(TOGGLE_FORM_STATE, null);
+export const showAddContactForm = () =>
+    createAction(SHOW_CONTACT_FORM, null);
+
+export const hideAddContactForm = () =>
+    createAction(HIDE_CONTACT_FORM, null);
     
 export const updateCustomSortOrder = (contactList) =>
     createAction(UPDATE_CUSTOM_SORT, contactList);

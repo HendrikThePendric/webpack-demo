@@ -5,7 +5,7 @@ export default function (state = [], {type, payload}) {
             return [...state, payload];
         case UPDATE_CUSTOM_SORT:
             // Loop through list based on current order and update sequenceId descending
-            return payload.map((c,i) => Object.assign({}, c, {sequenceId: payload.length - (i + 1)}));
+            return payload.map((c,i) => ({...c, sequenceId: payload.length - (i + 1)}));
         default:
             return state;
     }

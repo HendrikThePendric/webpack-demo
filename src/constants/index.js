@@ -14,6 +14,8 @@ export const PHONE  = 'phone';
 
 // Actions
 export const ADD_CONTACT           = 'Add a contact';
+export const UPDATE_CONTACT        = 'Update a contact';
+export const DELETE_CONTACT        = 'Delete a contact';
 export const UPDATE_SORT_PROP      = 'Update sort property';
 export const UPDATE_FILTER_VALUE   = 'Update filter value';
 export const HIDE_CONTACT_FORM     = 'Hide add contact form';

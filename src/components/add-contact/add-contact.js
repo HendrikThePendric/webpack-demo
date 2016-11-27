@@ -4,38 +4,27 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import NavigationExpandLess from 'material-ui/svg-icons/navigation/expand-less';
 import AddContactForm from './add-contact-form';
-import { addContact, showAddContactForm, hideAddContactForm, clearCurrentContact } from '../../actions';
-import { getNextSequenceId } from '../../store';
+import { addContact, updateContact, deleteContact, showAddContactForm, hideAddContactForm, clearCurrentContact } from '../../actions';
 import './add-contact.scss';
 
 class AddContact extends Component {
 
     onFormSubmit(values) {
-        const {hideAddContactForm, currContact, clearCurrentContact } = this.props;
+        const { currContact, clearCurrentContact, hideAddContactForm, addContact, updateContact } = this.props;
         if (currContact) {
-            this.updateContact(values);
-            hideAddContactForm();
-        } else {
-            this.addContact(values);
+            updateContact({currContact, values});
             clearCurrentContact();
+        } else {
+            addContact({...values, id: Date.now()});
         }
+        hideAddContactForm();
     }
 
-    addContact(values) {
-        const {addContact, nextSequenceId } = this.props;
-        const { firstName, lastName, phone } = values;
-        const id = Date.now();
-        addContact({
-            firstName,
-            lastName,
-            phone,
-            id, 
-            sequenceId: nextSequenceId
-        });
-    }
-
-    updateContact(values) {
-        const {} = this.props;
+    onContactDelete() {
+        const { clearCurrentContact, hideAddContactForm, deleteContact, currContact } = this.props;
+        deleteContact(currContact.id);
+        clearCurrentContact();
+        hideAddContactForm();
     }
 
     onTogglerClick() {
@@ -53,7 +42,12 @@ class AddContact extends Component {
         if (!showForm) {
             return null;
         }
-        return <AddContactForm onSubmit={this.onFormSubmit.bind(this)} />
+        return (
+            <AddContactForm 
+                onSubmit={this.onFormSubmit.bind(this)} 
+                deleteCurrentContact={this.onContactDelete.bind(this)}
+                />
+        );
     }
 
     renderIcon(showForm) {
@@ -85,7 +79,6 @@ class AddContact extends Component {
 function mapStateToProps (state) {
     return {
         showForm: state.showForm,
-        nextSequenceId: getNextSequenceId(state),
         currContact: state.currContact
 
     };
@@ -94,6 +87,8 @@ export default connect(
     mapStateToProps,
     {
         addContact,
+        updateContact,
+        deleteContact,
         showAddContactForm,
         hideAddContactForm,
         clearCurrentContact

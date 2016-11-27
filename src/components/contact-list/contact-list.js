@@ -7,12 +7,11 @@ import { updateCustomSortOrder, setCurrentContact, showAddContactForm } from '..
 import {CUSTOM} from '../../constants';
 import './contact-list.scss';
 
-const ContactListItem = ({item: {firstName, lastName, phone}, sharedProps: {disabled}}) => {
+const ContactListItem = ({item: {firstName, lastName, phone}}) => {
     return (
         <ListItem
             primaryText={firstName +' '+ lastName}
             secondaryText={phone}
-            disabled={disabled}
         />
     );
 };
@@ -21,15 +20,24 @@ class ContactList extends Component {
 
     onContactClick(event, contact, index) {
         const { setCurrentContact, showForm, showAddContactForm } = this.props;
-        const currContact = {...contact, listIndex: index};
+        const currContact = {...contact};
         if (!showForm) {
             showAddContactForm();
         }
         setCurrentContact(currContact);
     }
 
+    onReorder(event, item, index, newIndex, list) {
+        const { updateCustomSortOrder } = this.props;
+        const insertBefore        = newIndex === 0;
+        const insertContactId     = item.id;
+        const siblingContactIndex = insertBefore ? 1 : newIndex - 1;
+        const siblingContactId    = list[siblingContactIndex].id;
+        updateCustomSortOrder({insertContactId, siblingContactId, insertBefore});
+    }
+
     render() {
-        const { contacts, sortProp , updateCustomSortOrder } = this.props;
+        const { contacts, sortProp } = this.props;
         const disableReorder = sortProp !== CUSTOM;
         return (
             <Reorder
@@ -44,7 +52,7 @@ class ContactList extends Component {
                 // A template to display for each list item
                 template={ContactListItem}
                 // Function that is called once a reorder has been performed
-                callback={(event, item, index, newIndex, list) => updateCustomSortOrder(list)}
+                callback={this.onReorder.bind(this)}
                 // Class to be applied to the outer list element
                 listClass='contact-list'
                 // Class to be applied to each list item's wrapper element
@@ -55,7 +63,6 @@ class ContactList extends Component {
                 selectedKey='sequenceId'
                 // Allows reordering to be disabled
                 disableReorder={disableReorder}
-                sharedProps={{disabled: disableReorder}}
             />
         );
     };

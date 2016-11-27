@@ -5,7 +5,7 @@ import getInitialState from './initial-state.js';
 import rootReducer from '../reducers';
 
 // Passthroughs
-export { getVisibleContacts, getContactsCount, getNextSequenceId } from './queries';
+export { getVisibleContacts, getContactsCount } from './queries';
 
 export default function configureStore() {
     // Add logger in dev only ad when you want it switched on
@@ -19,7 +19,7 @@ export default function configureStore() {
     }
     // Keep contact list and sort property in the localStorage
     const enhancer = compose(
-        persistState(['contacts', 'sortProp']),
+        persistState(['contacts', 'sortProp'],{key: 'adress-book'}),
         applyMiddleware(...middlewares)
     );
     const store = createStore(rootReducer, getInitialState(), enhancer);

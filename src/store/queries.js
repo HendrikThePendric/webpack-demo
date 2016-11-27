@@ -24,10 +24,6 @@ export const getContactsCount = (state) => {
     return state.contacts.length;
 };
 
-export const getNextSequenceId = (state) => {
-    return state.contacts.length + 1;
-};
-
 
 // PRIVATE METHODS
 function filterContacts(contacts, filterVal) {
@@ -48,6 +44,9 @@ function anyPropMatchesFilter(contact, filterVal) {
 }
 
 function sortContactsBy(contacts, sortProp) {
+    if (sortProp === CUSTOM) {
+        return contacts;
+    }
     return contacts.sort((a, b) => {
         switch (sortProp) {
         case F_NAME_ASC:
@@ -62,8 +61,6 @@ function sortContactsBy(contacts, sortProp) {
             return compare(a.phone, b.phone);
         case PHONE_DESC:
             return compare(b.phone, a.phone);
-        case CUSTOM:
-            return b.sequenceId - a.sequenceId;
         // There should not be a default scenario but we include it to make the linter happy
         default:
             return compare(a.lastName, b.lastName);

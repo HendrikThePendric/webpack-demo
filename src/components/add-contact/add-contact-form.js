@@ -51,6 +51,7 @@ class AddContactForm extends Component {
     }
 
     renderDeleteBtn(show) {
+        const { deleteCurrentContact } = this.props;
         if (!show) {
             return null;
         }
@@ -59,6 +60,7 @@ class AddContactForm extends Component {
                 mini={true}
                 backgroundColor={'#F44336'}
                 style={{float: 'right', marginRight: '20px'}}
+                onClick={deleteCurrentContact}
                 >
                 <ActionDelete color={'#fff'} />
             </FloatingActionButton>

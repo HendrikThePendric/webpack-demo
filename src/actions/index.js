@@ -1,5 +1,7 @@
 import {
     ADD_CONTACT,
+    UPDATE_CONTACT,
+    DELETE_CONTACT,
     UPDATE_SORT_PROP,
     UPDATE_FILTER_VALUE,
     SHOW_CONTACT_FORM,
@@ -18,6 +20,12 @@ const createAction = (type, payload) => {
 
 export const addContact = (contact) =>
     createAction(ADD_CONTACT, contact);
+
+export const updateContact = (contact) =>
+    createAction(UPDATE_CONTACT, contact);
+
+export const deleteContact = (contact) =>
+    createAction(DELETE_CONTACT, contact);
 
 export const updateSortProp = (sortProp) =>
     createAction(UPDATE_SORT_PROP, sortProp);

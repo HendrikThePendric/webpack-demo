@@ -5,10 +5,11 @@ import RaisedButton from 'material-ui/RaisedButton';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
 import NavigationExpandLess from 'material-ui/svg-icons/navigation/expand-less';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ActionFavorite from 'material-ui/svg-icons/action/favorite';
+import ActionFavoriteBorder from 'material-ui/svg-icons/action/favorite-border';
 import { hideAddContactForm, clearCurrentContact } from '../../actions';
-
-import { TextField } from 'redux-form-material-ui';
-import { F_NAME, L_NAME, PHONE } from '../../constants';
+import { TextField, Checkbox } from 'redux-form-material-ui';
+import { F_NAME, L_NAME, PHONE, IS_FAVORITE } from '../../constants';
 
 const validate = (values) => {
     // exit early
@@ -96,6 +97,14 @@ class AddContactForm extends Component {
                     type="text"
                     style={{ display: 'block', marginBottom: '20px' }}
                     />
+                <Field
+                    name={IS_FAVORITE}
+                    component={Checkbox}
+                    label="Mark as favorite"
+                    checkedIcon={<ActionFavorite />}
+                    uncheckedIcon={<ActionFavoriteBorder />}
+                    style={{ display: 'block', marginBottom: '20px'}}
+                    />
                 <RaisedButton
                     label={currContactIsSet ? 'Update' :  'Add contact'}
                     primary={!currContactIsSet}
@@ -120,10 +129,10 @@ class AddContactForm extends Component {
 
     const getInitialValues = (currContact) => {
         if (currContact) {
-            const { firstName, lastName, phone } = currContact;
-            return { firstName, lastName, phone };
+            const { firstName, lastName, phone, isFavorite } = currContact;
+            return { firstName, lastName, phone, isFavorite };
         }
-        return { firstName: '', lastName: '', phone: ''};
+        return { firstName: '', lastName: '', phone: '', isFavorite: false};
     }
 
     const reduxConnectedForm = reduxForm({

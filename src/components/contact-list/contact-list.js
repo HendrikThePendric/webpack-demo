@@ -1,20 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Reorder from 'react-reorder';
+import Subheader from 'material-ui/Subheader';
 import { getVisibleContacts } from '../../store';
-import {ListItem} from 'material-ui/List';
+import ContactListItem from './contact-list-item';
 import { updateCustomSortOrder, setCurrentContact, showAddContactForm } from '../../actions';
 import {CUSTOM} from '../../constants';
 import './contact-list.scss';
-
-const ContactListItem = ({item: {firstName, lastName, phone}}) => {
-    return (
-        <ListItem
-            primaryText={firstName +' '+ lastName}
-            secondaryText={phone}
-        />
-    );
-};
 
 class ContactList extends Component {
 
@@ -37,42 +29,50 @@ class ContactList extends Component {
     }
 
     render() {
-        const { contacts, sortProp } = this.props;
+        const { totalContactsCnt, contacts, sortProp } = this.props;
         const disableReorder = sortProp !== CUSTOM;
         return (
-            <Reorder
-                // The key of each object in your list to use as the element key
-                itemKey='id'
-                // Lock horizontal to have a vertical list
-                lock='horizontal'
-                // The milliseconds to hold an item for before dragging begins
-                holdTime='310'
-                // The list to display
-                list={contacts}
-                // A template to display for each list item
-                template={ContactListItem}
-                // Function that is called once a reorder has been performed
-                callback={this.onReorder.bind(this)}
-                // Class to be applied to the outer list element
-                listClass='contact-list'
-                // Class to be applied to each list item's wrapper element
-                itemClass='list-item'
-                // A function to be called if a list item is clicked (before hold time is up)
-                itemClicked={this.onContactClick.bind(this)}
-                // The key to compare from the selected item object with each item object
-                selectedKey='sequenceId'
-                // Allows reordering to be disabled
-                disableReorder={disableReorder}
-            />
+            <div>
+                <Subheader
+                    style={{textAlign: 'right', paddingRight: '16px'}}
+                    >
+                    Showing {contacts.length} / {totalContactsCnt} contacts
+                </Subheader>
+                <Reorder
+                    // The key of each object in your list to use as the element key
+                    itemKey='id'
+                    // Lock horizontal to have a vertical list
+                    lock='horizontal'
+                    // The milliseconds to hold an item for before dragging begins
+                    holdTime='310'
+                    // The list to display
+                    list={contacts}
+                    // A template to display for each list item
+                    template={ContactListItem}
+                    // Function that is called once a reorder has been performed
+                    callback={this.onReorder.bind(this)}
+                    // Class to be applied to the outer list element
+                    listClass='contact-list'
+                    // Class to be applied to each list item's wrapper element
+                    itemClass='list-item'
+                    // A function to be called if a list item is clicked (before hold time is up)
+                    itemClicked={this.onContactClick.bind(this)}
+                    // The key to compare from the selected item object with each item object
+                    selectedKey='sequenceId'
+                    // Allows reordering to be disabled
+                    disableReorder={disableReorder}
+                />
+            </div>
         );
     };
 };
 
 function mapStateToProps (state) {
     return {
-        contacts: getVisibleContacts(state),
-        sortProp: state.sortProp,
-        showForm: state.showForm
+        totalContactsCnt: state.contacts.length,
+        contacts:         getVisibleContacts(state),
+        sortProp:         state.sortProp,
+        showForm:         state.showForm
     };
 }
 export default connect(

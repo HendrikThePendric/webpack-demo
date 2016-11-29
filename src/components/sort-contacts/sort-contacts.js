@@ -26,6 +26,7 @@ class SortContacts extends Component {
                 value={sortProp}
                 onChange={this.onChange.bind(this)}
                 floatingLabelText="Sort by:"
+                style={{width: 'calc(100% - 16px)'}}
             >
             {renderSortOptions()}
             </SelectField>

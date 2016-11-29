@@ -4,8 +4,10 @@ $module: 'contact-list';
 
 .#{$module} {
     .list-item {
+        user-select: none;
 
         &.dragged {
+            background-color: #BDBDBD;
             @include box-shadow;
         }
         &.placeholder {

@@ -13,9 +13,9 @@ import {
 
 // PUBLIC METHODS
 export const getVisibleContacts = (state) => {
-    const { contacts, filterVal, sortProp } = state;
+    const { contacts, filterVal, favoritesOnly, sortProp } = state;
     // Filtered contact list, new array in both cases
-    const filteredContacts = filterContacts(contacts, filterVal);
+    const filteredContacts = filterContacts(contacts, filterVal, favoritesOnly);
     // Sorted list, a sorted version of that new array
     return sortContactsBy(filteredContacts, sortProp);
 };
@@ -26,19 +26,20 @@ export const getContactsCount = (state) => {
 
 
 // PRIVATE METHODS
-function filterContacts(contacts, filterVal) {
-    if (!filterVal) {
+function filterContacts(contacts, filterVal, favoritesOnly) {
+    if (!filterVal && !favoritesOnly) {
         return [...contacts];
     }
-    return contacts.filter(contact => anyPropMatchesFilter(contact, filterVal.toLowerCase()));
+    return contacts.filter(contact => contactsFilter(contact, filterVal.toLowerCase(), favoritesOnly));
 }
 
-function anyPropMatchesFilter(contact, filterVal) {
-    const contactProps = [F_NAME, L_NAME, PHONE];
-    for (var i = 0; i < contactProps.length; i++) {
-        if (contact[contactProps[i]].toLowerCase().indexOf(filterVal) !== -1) {
-            return true;
-        }
+function contactsFilter(contact, filterVal, favoritesOnly) {
+    if (favoritesOnly && !contact.isFavorite) {
+        return false;
+    }
+    const searchStr = `${contact[F_NAME]}|${contact[L_NAME]}|${contact[PHONE]}`.toLowerCase();
+    if (searchStr.indexOf(filterVal) !== -1) {
+        return true;
     }
     return false;
 }

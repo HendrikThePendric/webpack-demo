@@ -4,6 +4,7 @@ import {
     DELETE_CONTACT,
     UPDATE_SORT_PROP,
     UPDATE_FILTER_VALUE,
+    TOGGLE_FAVORITES_ONLY,
     SHOW_CONTACT_FORM,
     HIDE_CONTACT_FORM,
     UPDATE_CUSTOM_SORT,
@@ -32,6 +33,9 @@ export const updateSortProp = (sortProp) =>
 
 export const updateFilterValue = (val) =>
     createAction(UPDATE_FILTER_VALUE, val);
+
+export const toggleFavoritesOnly = () =>
+    createAction(TOGGLE_FAVORITES_ONLY);
 
 export const showAddContactForm = () =>
     createAction(SHOW_CONTACT_FORM, null);

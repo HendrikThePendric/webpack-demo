@@ -1,26 +1,22 @@
 import React, { Component } from 'react';
 import './app.scss';
-import { connect } from 'react-redux';
-import { getContactsCount } from '../../store';
 import AddContact from '../add-contact/add-contact';
 import SortContacts from '../sort-contacts/sort-contacts';
 import FilterContacts from '../filter-contacts/filter-contacts';
+import FavoritesToggler from '../favorites-toggler/favorites-toggler';
 import ContactList from '../contact-list/contact-list';
 
-class App extends Component {
+export default class App extends Component {
 
     render() {
-        const { contactsCount } = this.props;
         return (
             <main className="app">
                 <div className="add-wrap">
                     <AddContact />
                 </div>
                 <div className="list-wrap">
-                    <h2>
-                        Contact list 
-                        <small>({contactsCount} contacts)</small>
-                    </h2>
+                    <h2>Contact list</h2>
+                    <FavoritesToggler />
                     <FilterContacts />
                     <SortContacts />
                     <ContactList  />
@@ -29,11 +25,3 @@ class App extends Component {
         );
     }
 }
-
-
-function mapStateToProps (state) {
-    return {
-        contactsCount: getContactsCount(state)
-    };
-}
-export default connect(mapStateToProps)(App);

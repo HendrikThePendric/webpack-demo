@@ -8,9 +8,10 @@ export const PHONE_DESC  = 'Phone descending';
 export const CUSTOM      = 'Custom order';
 
 // Contact properties
-export const F_NAME = 'firstName';
-export const L_NAME = 'lastName';
-export const PHONE  = 'phone';
+export const F_NAME      = 'firstName';
+export const L_NAME      = 'lastName';
+export const PHONE       = 'phone';
+export const IS_FAVORITE = 'isFavorite';
 
 // Actions
 export const ADD_CONTACT           = 'Add a contact';
@@ -18,6 +19,7 @@ export const UPDATE_CONTACT        = 'Update a contact';
 export const DELETE_CONTACT        = 'Delete a contact';
 export const UPDATE_SORT_PROP      = 'Update sort property';
 export const UPDATE_FILTER_VALUE   = 'Update filter value';
+export const TOGGLE_FAVORITES_ONLY = 'Toggle favorites only';
 export const HIDE_CONTACT_FORM     = 'Hide add contact form';
 export const SHOW_CONTACT_FORM     = 'Show add contact form';
 export const UPDATE_CUSTOM_SORT    = 'Update custom sort order';

@@ -8,13 +8,13 @@ import rootReducer from '../reducers';
 export { getVisibleContacts, getContactsCount } from './queries';
 
 export default function configureStore() {
-    // Add logger in dev only ad when you want it switched on
+    // Add logger in dev only and when you want it switched on
     const middlewares = [];
     // Switch logger on and off
     const shouldLog = false;
     if (process.env.NODE_ENV === 'development' && shouldLog) {
-        const createLogger = require(`redux-logger`);
-        const logger = createLogger();
+        const reduxLogger = require(`redux-logger`);
+        const logger = reduxLogger.createLogger();
         middlewares.push(logger);
     }
     // Keep contact list and sort property in the localStorage

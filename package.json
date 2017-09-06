@@ -40,6 +40,7 @@
     "promise": "7.1.1",
     "react-dev-utils": "^0.3.0",
     "recursive-readdir": "2.1.0",
+    "redux-logger": "^3.0.6",
     "rimraf": "2.5.4",
     "sass-loader": "^4.0.2",
     "strip-ansi": "3.0.1",
